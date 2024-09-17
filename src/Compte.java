@@ -184,11 +184,7 @@ public class Compte
 
     public boolean estDecouvert()
     {
-        if(this.soldeCompte<0)
-        {
-            return true;
-        }
-        return false;
+        return this.soldeCompte < 0;
     }
 
 
