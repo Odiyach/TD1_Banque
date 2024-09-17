@@ -4,11 +4,16 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         Personne p1 =new Personne("J. DUPONT ");
-        Compte c1 =new Compte(1,p1);
-        c1.crediterCompte(1000);
+        Compte c1 =new Compte(p1,1000);
+
 
         Personne p2 =new Personne("C. DURANT  ");
-        Compte c2 =new Compte(2,p2,50000,5000,6000);
+        Compte c2 =new Compte(p2,50000,5000,6000);
+
+        Personne p3 =new Personne("test  ");
+        Compte c3= new Compte(p3, -200, 5000, 6000);
+        System.out.println(c3.CaracteristiquesCompte());
+
 
         System.out.println(c1.CaracteristiquesCompte()+c2.CaracteristiquesCompte());
 
@@ -46,11 +51,7 @@ public class Main {
         //caracteristiques du compte c1 apres les différents testsq
         System.out.println(c1.CaracteristiquesCompte());
 
-
-
-
-
-
+        //ttes entrées et sortie normal et exception de chaque fonction + test cascade
 
 
 

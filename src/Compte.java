@@ -11,8 +11,8 @@ public class Compte
     private static final double MontantDebitMaxiAutorise = 1000;
 
     private static final int MontantSoldeCompte = 0;
+    private static int cptComptes=0;
 
-//constructeurs avec titulaire , titulaire, solde, et un avec tt le moin qui appelle le plus
 
 
     //constructeur permettant de créer un compte avec seulement un numéro de compte et le titulaire.
@@ -20,6 +20,7 @@ public class Compte
     {
 
         this(titulaire,MontantSoldeCompte,MontantDecouvertMaxiAutorise,MontantDebitMaxiAutorise);
+
 
     }
 
@@ -31,10 +32,10 @@ public class Compte
     //constructeur permettant de définir à la création du compte, à part le numéro de compte et le titulaire, de nouvelles caractéristiques.
     public Compte( Personne titulaire, double soldeCompte, double decouvertMaxAutorise, double debitMaxAutorise)
     {
-
-        this(titulaire, soldeCompte,MontantDecouvertMaxiAutorise,MontantDebitMaxiAutorise);
-        this.numCompte=numCompte();
-
+        this.numCompte= ++cptComptes;
+        this.titulaire=titulaire;
+        this.decouvertMaxAutorise=decouvertMaxAutorise;
+        this.debitMaxAutorise=debitMaxAutorise;
         if(soldeCompte<0)
         {
             this.soldeCompte= MontantSoldeCompte;
@@ -47,7 +48,7 @@ public class Compte
     }
 
 
-    public int getNumCompte()
+    public  int getNumCompte()
     {
         return numCompte;
     }
@@ -157,15 +158,16 @@ public class Compte
     // cela entrainera le debit du compte crediteur et le credit du compte bénéficiaire.
     public boolean effectuerVirement( Compte beneficiaire, double montant)
     {
-        if(montant<= montantDebitAutorise())
+        if(montant<= montantDebitAutorise()  )
         {
-            this.debiterCompte(montant);
-            beneficiaire.crediterCompte(montant);
-            return true;
+            if(this.debiterCompte(montant))
+            {
+                beneficiaire.crediterCompte(montant);
+                return true;
+            }
+
         }
-
             return false;
-
     }
 
 
