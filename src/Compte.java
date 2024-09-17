@@ -1,6 +1,7 @@
 public class Compte
 {
     private int numCompte;
+
     private Personne titulaire;
     private double soldeCompte;
     private double decouvertMaxAutorise;
@@ -11,25 +12,28 @@ public class Compte
 
     private static final int MontantSoldeCompte = 0;
 
-
+//constructeurs avec titulaire , titulaire, solde, et un avec tt le moin qui appelle le plus
 
 
     //constructeur permettant de créer un compte avec seulement un numéro de compte et le titulaire.
-    public Compte(int numCompte, Personne titulaire)
+    public Compte(Personne titulaire)
     {
-        this.numCompte = numCompte;
-        this.titulaire = titulaire;
-        this.soldeCompte=MontantSoldeCompte;
-        this.decouvertMaxAutorise=MontantDecouvertMaxiAutorise;
-        this.debitMaxAutorise=MontantDebitMaxiAutorise;
+
+        this(titulaire,MontantSoldeCompte,MontantDecouvertMaxiAutorise,MontantDebitMaxiAutorise);
+
+    }
+
+    public Compte(Personne titulaire, double soldeCompte)
+    {
+        this(titulaire, soldeCompte,MontantDecouvertMaxiAutorise,MontantDebitMaxiAutorise);
     }
 
     //constructeur permettant de définir à la création du compte, à part le numéro de compte et le titulaire, de nouvelles caractéristiques.
-    public Compte(int numCompte, Personne titulaire, double soldeCompte, double decouvertMaxAutorise, double debitMaxAutorise)
+    public Compte( Personne titulaire, double soldeCompte, double decouvertMaxAutorise, double debitMaxAutorise)
     {
-       this(numCompte,titulaire);
-        this.decouvertMaxAutorise = decouvertMaxAutorise;
-        this.debitMaxAutorise = debitMaxAutorise;
+
+        this(titulaire, soldeCompte,MontantDecouvertMaxiAutorise,MontantDebitMaxiAutorise);
+        this.numCompte=numCompte();
 
         if(soldeCompte<0)
         {
@@ -41,7 +45,6 @@ public class Compte
         }
 
     }
-
 
 
     public int getNumCompte()
@@ -176,6 +179,21 @@ public class Compte
                 this.messageDecouvert()+"\n";
 
     }
+
+    public boolean estDecouvert()
+    {
+        if(this.soldeCompte<0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+
+
 
 
 
