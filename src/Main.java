@@ -3,16 +3,18 @@ import javax.swing.*;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        // Tests des trois constructeurs
+
         Personne p1 = new Personne("J. DUPONT");
 
-        // Test du premier constructeur (titulaire)
-        Compte c1 = new Compte(p1);
+        // Test du constructeur (titulaire, solde positif)
+        Compte c1 = new Compte(p1,1000);
         System.out.println(c1.CaracteristiquesCompte());
 
-        Personne p2 =new Personne("C. DURANT  ");
+        Personne p2 =new Personne("C. DURANT ");
+
+        // Test du constructeur (titulaire,solde,decouvertMax,debitMax)
         Compte c2 =new Compte(p2,50000,5000,6000);
-        System.out.println(c1.CaracteristiquesCompte()+c2.CaracteristiquesCompte());
+        System.out.println(c1.CaracteristiquesCompte()+"\n"+c2.CaracteristiquesCompte());
 
         c1.debiterCompte(300);
         System.out.println("c1 apres debit de 300 : Solde => "+c1.getSoldeCompte());
@@ -31,11 +33,8 @@ public class Main {
 
 
 
-        // Test du deuxième constructeur (titulaire + solde positif)
-        Compte c22 = new Compte(p1, 500);
-        System.out.println(c22.CaracteristiquesCompte());
-
         // Test du deuxième constructeur (titulaire + solde négatif)
+        // solde mis à 0
         Compte c3 = new Compte(p1, -100);
         System.out.println(c3.CaracteristiquesCompte());
 
@@ -67,19 +66,19 @@ public class Main {
 
 
 
-        Compte c6 = new Compte(new Personne("p6"), 1000, 500, 1500);
-        Compte c7 = new Compte(new Personne("p7"), 200);
+        Compte c6 = new Compte(p1, 1000, 500, 1500);
+        Compte c7 = new Compte(p2, 200);
 
         // Virement valide
-        System.out.println("Virement de 200 de compte1 vers compte2: " + c6.effectuerVirement(c7, 200));
-        System.out.println("Nouveau solde compte1: " + c6.getSoldeCompte()); // 800
-        System.out.println("Nouveau solde compte2: " + c7.getSoldeCompte()); // 400
+        System.out.println("Virement de 200 de c6 vers c7: " + c6.effectuerVirement(c7, 200));
+        System.out.println("Nouveau solde c6: " + c6.getSoldeCompte()); // 800
+        System.out.println("Nouveau solde c7: " + c7.getSoldeCompte()); // 400
 
         // Erreur (montant supérieur au débit autorisé)
-        System.out.println("Virement de 2000 de compte1 vers compte2: " + c6.effectuerVirement(c7, 2000)); // renvoie false
+        System.out.println("Virement de 2000 de c6 vers c7: " + c6.effectuerVirement(c7, 2000)); // renvoie false
 
         // Test de montant de débit autorisé
-        System.out.println("Montant de débit autorisé compte1: " + c6.montantDebitAutorise());
+        System.out.println("Montant de débit autorisé de c6: " + c6.montantDebitAutorise());
 
 
         // Création d'un compte à découvert
@@ -89,7 +88,7 @@ public class Main {
 
 
 
-        Compte c8 = new Compte(new Personne("p8"), 500);
+        Compte c8 = new Compte(p1, 500);
 
         // Changer le découvert maximal autorisé
         c8.setDecouvertMaxAutorise(2000);
@@ -98,36 +97,29 @@ public class Main {
         // Changer le débit maximal autorisé
         c8.setDebitMaxAutorise(3000);
         System.out.println("Nouveau débit max autorisé: " + c8.getDebitMaxAutorise()); // 3000
+        System.out.println(c8.CaracteristiquesCompte());
 
         Compte c9= new Compte(p1);
-        System.out.println(c9.CaracteristiquesCompte());
-
-        c8.crediterCompte(500);
-        System.out.println(c9.CaracteristiquesCompte());
-
-        c8.debiterCompte(600);
-        System.out.println(c9.CaracteristiquesCompte());
-
-
-
-
-
+        c9.crediterCompte(500);
+        c9.debiterCompte(600);
+        System.out.println("c9 : " + c9.CaracteristiquesCompte());
 
 
         // essai d'un debit supérieur au débit max autorisé (tester l'erreur)
-        c1.debiterCompte(1100);
+        c9.debiterCompte(1300);
+        System.out.println("Statut du débit : "+c9.debiterCompte(1300));
+        //réatribution du débit max a 1500
+        c9.setDebitMaxAutorise(1500);
 
-        //réatribution du débit max a 1200
-        c1.setDebitMaxAutorise(1200);
-
-        //verification du montant de débit max du compte c1
-        c1.montantDebitAutorise();
+        //verification du montant de débit max du compte c9
+        c9.montantDebitAutorise();
+        System.out.println(c9.montantDebitAutorise());//700
 
         // 2ème essai d'un debit maintenant inférieur au débit max autorisé
-        c1.debiterCompte(1100);
+        c9.debiterCompte(600);
 
         //caracteristiques du compte c1 apres les différents testsq
-        System.out.println(c1.CaracteristiquesCompte());
+        System.out.println(c9.CaracteristiquesCompte());
 
 
     }
