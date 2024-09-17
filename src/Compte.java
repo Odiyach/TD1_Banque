@@ -6,26 +6,40 @@ public class Compte
     private double decouvertMaxAutorise;
     private double debitMaxAutorise;
 
-    private static final int decouvertMaxiAutorise = 800;
+    private static final double MontantDecouvertMaxiAutorise = 800;
+    private static final double MontantDebitMaxiAutorise = 1000;
+
+    private static final int MontantSoldeCompte = 0;
+
+
+
 
     //constructeur permettant de créer un compte avec seulement un numéro de compte et le titulaire.
     public Compte(int numCompte, Personne titulaire)
     {
         this.numCompte = numCompte;
         this.titulaire = titulaire;
-        this.soldeCompte=0;
-        this.decouvertMaxAutorise=800;
-        this.debitMaxAutorise=1000;
+        this.soldeCompte=MontantSoldeCompte;
+        this.decouvertMaxAutorise=MontantDecouvertMaxiAutorise;
+        this.debitMaxAutorise=MontantDebitMaxiAutorise;
     }
 
     //constructeur permettant de définir à la création du compte, à part le numéro de compte et le titulaire, de nouvelles caractéristiques.
     public Compte(int numCompte, Personne titulaire, double soldeCompte, double decouvertMaxAutorise, double debitMaxAutorise)
     {
-        this.numCompte = numCompte;
-        this.titulaire = titulaire;
-        this.soldeCompte = soldeCompte;
+       this(numCompte,titulaire);
         this.decouvertMaxAutorise = decouvertMaxAutorise;
         this.debitMaxAutorise = debitMaxAutorise;
+
+        if(soldeCompte<0)
+        {
+            this.soldeCompte= MontantSoldeCompte;
+        }
+        else
+        {
+            this.soldeCompte = soldeCompte;
+        }
+
     }
 
 
@@ -49,11 +63,12 @@ public class Compte
     public double getDebitMaxAutorise() {
         return debitMaxAutorise;
     }
-    public void setDecouvertMaxAutorise(double decouvertMaxAutorise)
+     public void setDecouvertMaxAutorise(double decouvertMaxAutorise)
     {
         this.decouvertMaxAutorise = decouvertMaxAutorise;
     }
-    public void setDebitMaxAutorise(double debitMaxAutorise) {
+     public void setDebitMaxAutorise(double debitMaxAutorise)
+     {
         this.debitMaxAutorise = debitMaxAutorise;
     }
 
@@ -103,10 +118,15 @@ public class Compte
 
 
     // la methode crediterCompte permet d'ajouter un montant positif au solde
-    public void crediterCompte(double montant)
+    public boolean crediterCompte(double montant)
     {
+        if(montant>0)
+        {
+            this.soldeCompte+=montant;
+            return true;
 
-        this.soldeCompte+=montant;
+        }
+        return false;
 
     }
 
@@ -140,12 +160,9 @@ public class Compte
             beneficiaire.crediterCompte(montant);
             return true;
         }
-        else
-        {
+
             return false;
 
-
-        }
     }
 
 
