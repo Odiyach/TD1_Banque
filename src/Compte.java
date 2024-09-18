@@ -33,6 +33,10 @@ public class Compte
     public Compte( Personne titulaire, double soldeCompte, double decouvertMaxAutorise, double debitMaxAutorise)
     {
         this.numCompte= ++cptComptes;
+
+
+
+
         this.titulaire=titulaire;
         this.decouvertMaxAutorise=decouvertMaxAutorise;
         this.debitMaxAutorise=debitMaxAutorise;
@@ -122,53 +126,38 @@ public class Compte
 
 
     // la methode crediterCompte permet d'ajouter un montant positif au solde
-    public boolean crediterCompte(double montant)
-    {
-        if(montant>0)
-        {
-            this.soldeCompte+=montant;
-            return true;
-
+    public void crediterCompte(double montant) throws CompteException {
+        if (montant <= 0) {
+            throw new CompteException("Le montant à créditer doit être supérieur à zéro.");
         }
-        return false;
-
+        this.soldeCompte += montant;
     }
+
 
 
 
     //la methode debiterCompte permet de retirer de l'argent.
     //Pour cela, il vérifie d'abord si le montant a retirer dépasse la limite du débit autorisé.
     //Dans ce cas le débit est refusé, sinon, le débit est effectué.
-    public boolean debiterCompte(double montant)
-    {
-
-        if (montant> montantDebitAutorise())
-        {
-            return  false;
+    public void debiterCompte(double montant) throws CompteException {
+        if (montant > montantDebitAutorise()) {
+            throw new CompteException("Le montant à débiter dépasse la limite autorisée.");
         }
-        else
-        {
-            this.soldeCompte-=montant;
-            return  true;
-        }
-
+        this.soldeCompte -= montant;
     }
+
 
     //effectuerVirement est une mthode qui permet d'effectuer un virement vers un commpte beneficiaire.
     // cela entrainera le debit du compte crediteur et le credit du compte bénéficiaire.
-    public boolean effectuerVirement( Compte beneficiaire, double montant)
-    {
-        if(montant<= montantDebitAutorise()  )
-        {
-            if(this.debiterCompte(montant))
-            {
-                beneficiaire.crediterCompte(montant);
-                return true;
-            }
-
+    public void effectuerVirement(Compte beneficiaire, double montant) throws CompteException {
+        if (montant > montantDebitAutorise()) {
+            throw new CompteException("Le montant à transférer dépasse la limite autorisée.");
         }
-            return false;
+
+        this.debiterCompte(montant);
+        beneficiaire.crediterCompte(montant);
     }
+
 
 
     public String CaracteristiquesCompte()
